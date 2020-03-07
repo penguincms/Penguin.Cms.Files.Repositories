@@ -23,7 +23,7 @@ namespace Penguin.Cms.Files.Repositories
 
         public DatabaseFileRepository(IPersistenceContext<DatabaseFile> dbContext, FileService fileService, ISecurityProvider<DatabaseFile> securityProvider = null, MessageBus messageBus = null) : base(dbContext, messageBus)
         {
-            SecurityProvider = securityProvider;
+            this.SecurityProvider = securityProvider;
             this.FileService = fileService;
         }
 
@@ -45,7 +45,7 @@ namespace Penguin.Cms.Files.Repositories
                 throw new ArgumentNullException(nameof(o));
             }
 
-            DeleteFile(o);
+            this.DeleteFile(o);
 
             base.Delete(o);
         }
@@ -59,13 +59,16 @@ namespace Penguin.Cms.Files.Repositories
 
             foreach (DatabaseFile entity in o)
             {
-                DeleteFile(entity);
+                this.DeleteFile(entity);
             }
 
             base.DeleteRange(o);
         }
 
-        public override DatabaseFile Find(Guid guid) => SecurityProvider.TryFind(base.Find(guid));
+        public override DatabaseFile Find(Guid guid)
+        {
+            return this.SecurityProvider.TryFind(base.Find(guid));
+        }
 
         public DatabaseFile GetByFullName(string FullName)
         {
@@ -77,7 +80,10 @@ namespace Penguin.Cms.Files.Repositories
             return db;
         }
 
-        public List<DatabaseFile> GetByOwner(Guid OwnerGuid) => this.Where(f => f.Owner == OwnerGuid).ToList();
+        public List<DatabaseFile> GetByOwner(Guid OwnerGuid)
+        {
+            return this.Where(f => f.Owner == OwnerGuid).ToList();
+        }
 
         public List<DatabaseFile> GetByPath(string FilePath, bool Recursive = false)
         {
@@ -85,7 +91,7 @@ namespace Penguin.Cms.Files.Repositories
 
             int i = 0;
 
-            toReturn.AddRange(this.Where(f => f.FilePath == FilePath).ToList().Where(d => SecurityProvider.TryCheckAccess(d)).ToList());
+            toReturn.AddRange(this.Where(f => f.FilePath == FilePath).ToList().Where(d => this.SecurityProvider.TryCheckAccess(d)).ToList());
 
             if (Recursive)
             {
