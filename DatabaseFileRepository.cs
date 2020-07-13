@@ -72,7 +72,11 @@ namespace Penguin.Cms.Files.Repositories
 
         public DatabaseFile GetByFullName(string FullName)
         {
-            Contract.Requires(!string.IsNullOrWhiteSpace(FullName));
+            if (FullName is null)
+            {
+                throw new ArgumentNullException(nameof(FullName));
+            }
+
             FullName = FullName.Replace('/', '\\');
 
             DatabaseFile db = this.Where(f => f.FilePath + "\\" + f.FileName == FullName).OrderByDescending(f => f._Id).FirstOrDefault();
