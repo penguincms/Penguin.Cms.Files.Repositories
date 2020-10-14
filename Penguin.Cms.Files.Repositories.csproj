@@ -11,7 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Penguin.Files" Version="5.0.1-TA2OIRX" />
-    <PackageReference Include="Penguin.Cms.Files" Version="5.0.1-TA2VU4J" />
-    <PackageReference Include="Penguin.Cms.Repositories" Version="5.0.1-TA2VU4J" />
+    <PackageReference Include="Penguin.Cms.Files" Version="5.0.1-TA3REW0" />
+    <PackageReference Include="Penguin.Cms.Repositories" Version="5.0.1-TA3REW0" />
   </ItemGroup>
 </Project>
