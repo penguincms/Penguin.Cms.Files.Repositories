@@ -8,14 +8,12 @@ using Penguin.Security.Abstractions.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.IO;
 
 using System.Linq;
 
 namespace Penguin.Cms.Files.Repositories
 {
-    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
     public class DatabaseFileRepository : AuditableEntityRepository<DatabaseFile>
     {
         protected FileService FileService { get; set; }
@@ -77,9 +75,12 @@ namespace Penguin.Cms.Files.Repositories
                 throw new ArgumentNullException(nameof(FullName));
             }
 
-            FullName = FullName.Replace('/', '\\');
+            if (Path.DirectorySeparatorChar == '\\')
+            {
+                FullName = FullName.Replace('/', '\\');
+            }
 
-            DatabaseFile db = this.Where(f => f.FilePath + "\\" + f.FileName == FullName).OrderByDescending(f => f._Id).FirstOrDefault();
+            DatabaseFile db = this.Where(f => f.FilePath + Path.DirectorySeparatorChar + f.FileName == FullName).OrderByDescending(f => f._Id).FirstOrDefault();
 
             return db;
         }
