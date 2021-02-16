@@ -80,7 +80,10 @@ namespace Penguin.Cms.Files.Repositories
                 FullName = FullName.Replace('/', '\\');
             }
 
-            DatabaseFile db = this.Where(f => f.FilePath + Path.DirectorySeparatorChar + f.FileName == FullName).OrderByDescending(f => f._Id).FirstOrDefault();
+            //EF is dumb as fuck
+            string dirChar = Path.DirectorySeparatorChar.ToString();
+
+            DatabaseFile db = this.Where(f => f.FilePath + dirChar + f.FileName == FullName).OrderByDescending(f => f._Id).FirstOrDefault();
 
             return db;
         }
