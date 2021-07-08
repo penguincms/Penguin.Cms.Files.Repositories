@@ -7,7 +7,6 @@ using Penguin.Security.Abstractions.Extensions;
 using Penguin.Security.Abstractions.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 using System.Linq;
@@ -43,7 +42,7 @@ namespace Penguin.Cms.Files.Repositories
                 throw new ArgumentNullException(nameof(o));
             }
 
-            this.DeleteFile(o);
+            DeleteFile(o);
 
             base.Delete(o);
         }
@@ -57,7 +56,7 @@ namespace Penguin.Cms.Files.Repositories
 
             foreach (DatabaseFile entity in o)
             {
-                this.DeleteFile(entity);
+                DeleteFile(entity);
             }
 
             base.DeleteRange(o);
@@ -117,7 +116,7 @@ namespace Penguin.Cms.Files.Repositories
             return toReturn;
         }
 
-        private void DeleteFile(DatabaseFile o)
+        private static void DeleteFile(DatabaseFile o)
         {
             o.Data = Array.Empty<byte>();
 
