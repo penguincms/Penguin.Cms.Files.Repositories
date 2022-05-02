@@ -10,8 +10,8 @@
     <DocumentationFile>Penguin.Cms.Files.Repositories.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Penguin.Files" Version="5.0.6-TAW5FE4" />
-    <PackageReference Include="Penguin.Cms.Repositories" Version="5.0.6-TAW5FE4" />
-    <PackageReference Include="Penguin.Cms.Files" Version="5.0.6-TAW5FE4" />
+    <PackageReference Include="Penguin.Files" Version="5.0.6-TAWVHS0" />
+    <PackageReference Include="Penguin.Cms.Repositories" Version="5.0.6-TAWVHS0" />
+    <PackageReference Include="Penguin.Cms.Files" Version="5.0.6-TAWVHS0" />
   </ItemGroup>
 </Project>
