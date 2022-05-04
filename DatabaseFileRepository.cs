@@ -62,7 +62,10 @@ namespace Penguin.Cms.Files.Repositories
             base.DeleteRange(o);
         }
 
-        public override DatabaseFile Find(Guid guid) => this.SecurityProvider.TryFind(base.Find(guid));
+        public override DatabaseFile Find(Guid guid)
+        {
+            return this.SecurityProvider.TryFind(base.Find(guid));
+        }
 
         public DatabaseFile GetByFullName(string FullName)
         {
@@ -84,7 +87,10 @@ namespace Penguin.Cms.Files.Repositories
             return db;
         }
 
-        public List<DatabaseFile> GetByOwner(Guid OwnerGuid) => this.Where(f => f.Owner == OwnerGuid).ToList();
+        public List<DatabaseFile> GetByOwner(Guid OwnerGuid)
+        {
+            return this.Where(f => f.Owner == OwnerGuid).ToList();
+        }
 
         public List<DatabaseFile> GetByPath(string FilePath, bool Recursive = false)
         {
