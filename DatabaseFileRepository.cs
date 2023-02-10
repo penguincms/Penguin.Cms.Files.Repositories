@@ -16,6 +16,7 @@ namespace Penguin.Cms.Files.Repositories
     public class DatabaseFileRepository : AuditableEntityRepository<DatabaseFile>
     {
         protected FileService FileService { get; set; }
+
         protected ISecurityProvider<DatabaseFile> SecurityProvider { get; set; }
 
         public DatabaseFileRepository(IPersistenceContext<DatabaseFile> dbContext, FileService fileService, ISecurityProvider<DatabaseFile> securityProvider = null, MessageBus messageBus = null) : base(dbContext, messageBus)
