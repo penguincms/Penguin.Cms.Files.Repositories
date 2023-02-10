@@ -20,19 +20,19 @@ namespace Penguin.Cms.Files.Repositories
 
         public DatabaseFileRepository(IPersistenceContext<DatabaseFile> dbContext, FileService fileService, ISecurityProvider<DatabaseFile> securityProvider = null, MessageBus messageBus = null) : base(dbContext, messageBus)
         {
-            this.SecurityProvider = securityProvider;
-            this.FileService = fileService;
+            SecurityProvider = securityProvider;
+            FileService = fileService;
         }
 
-        public override void AcceptMessage(Updating<DatabaseFile> update)
+        public override void AcceptMessage(Updating<DatabaseFile> updateMessage)
         {
-            if (update is null)
+            if (updateMessage is null)
             {
-                throw new ArgumentNullException(nameof(update));
+                throw new ArgumentNullException(nameof(updateMessage));
             }
 
-            this.Process(update.Target);
-            base.AcceptMessage(update);
+            Process(updateMessage.Target);
+            base.AcceptMessage(updateMessage);
         }
 
         public override void Delete(DatabaseFile o)
@@ -64,7 +64,7 @@ namespace Penguin.Cms.Files.Repositories
 
         public override DatabaseFile Find(Guid guid)
         {
-            return this.SecurityProvider.TryFind(base.Find(guid));
+            return SecurityProvider.TryFind(base.Find(guid));
         }
 
         public DatabaseFile GetByFullName(string FullName)
@@ -94,11 +94,11 @@ namespace Penguin.Cms.Files.Repositories
 
         public List<DatabaseFile> GetByPath(string FilePath, bool Recursive = false)
         {
-            List<DatabaseFile> toReturn = new List<DatabaseFile>();
+            List<DatabaseFile> toReturn = new();
 
             int i = 0;
 
-            toReturn.AddRange(this.Where(f => f.FilePath == FilePath).ToList().Where(d => this.SecurityProvider.TryCheckAccess(d)).ToList());
+            toReturn.AddRange(this.Where(f => f.FilePath == FilePath).ToList().Where(d => SecurityProvider.TryCheckAccess(d)).ToList());
 
             if (Recursive)
             {
@@ -106,7 +106,7 @@ namespace Penguin.Cms.Files.Repositories
                 {
                     if (toReturn[i].IsDirectory)
                     {
-                        toReturn.AddRange(this.GetByPath(toReturn[i].FullName));
+                        toReturn.AddRange(GetByPath(toReturn[i].FullName));
                     }
 
                     i++;
@@ -130,7 +130,7 @@ namespace Penguin.Cms.Files.Repositories
         {
             foreach (DatabaseFile entity in o)
             {
-                this.FileService.StoreOnDisk(entity);
+                FileService.StoreOnDisk(entity);
 
                 entity.ExternalId = entity.FullName;
             }
